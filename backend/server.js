@@ -1,0 +1,77 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const db = require('./db');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// ── Tools ───────────────────────────────────────────────────────────────────
+
+// GET /api/tools?risk=low|medium|high
+app.get('/api/tools', (req, res) => {
+    const { risk } = req.query;
+    let tools;
+    if (risk && ['low', 'medium', 'high'].includes(risk)) {
+        tools = db.prepare(
+            'SELECT id, name, site, risk, summary FROM tools WHERE risk = ? ORDER BY name'
+        ).all(risk);
+    } else {
+        tools = db.prepare(
+            `SELECT id, name, site, risk, summary FROM tools
+             ORDER BY CASE risk WHEN 'low' THEN 1 WHEN 'medium' THEN 2 WHEN 'high' THEN 3 END, name`
+        ).all();
+    }
+    res.json(tools);
+});
+
+// GET /api/tools/:id
+app.get('/api/tools/:id', (req, res) => {
+    const tool = db.prepare('SELECT * FROM tools WHERE id = ?').get(req.params.id);
+    if (!tool) return res.status(404).json({ error: 'Tool not found' });
+    res.json(tool);
+});
+
+// ── Guides ──────────────────────────────────────────────────────────────────
+
+// GET /api/guides
+app.get('/api/guides', (req, res) => {
+    const guides = db.prepare('SELECT id, title, description FROM guides ORDER BY rowid').all();
+    res.json(guides);
+});
+
+// GET /api/guides/:id
+app.get('/api/guides/:id', (req, res) => {
+    const guide = db.prepare('SELECT * FROM guides WHERE id = ?').get(req.params.id);
+    if (!guide) return res.status(404).json({ error: 'Guide not found' });
+    res.json(guide);
+});
+
+// ── Contact ─────────────────────────────────────────────────────────────────
+
+// POST /api/contact
+app.post('/api/contact', (req, res) => {
+    const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+        return res.status(400).json({ error: 'Name, email, and message are required.' });
+    }
+    const result = db.prepare(
+        'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
+    ).run(name.trim(), email.trim(), message.trim());
+    res.status(201).json({ success: true, id: result.lastInsertRowid });
+});
+
+// ── Catch-all ────────────────────────────────────────────────────────────────
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+app.listen(PORT, () => {
+    console.log(`ClickWise running at http://localhost:${PORT}`);
+});

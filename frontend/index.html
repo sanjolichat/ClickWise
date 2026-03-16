@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickWise - Transparent Tool Evaluation Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0 !important; }
+        :root {
+            --primary: #FB6376; --dark: #5D2A42; --accent: #10b981; --warning: #ef4444;
+            --light-peach: #FFDCCC; --cream: #FFF9EC; --text-gray: #6b7280;
+            --dark-gray: #111827; --border: #e5e7eb;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--dark-gray); background: white; }
+        header { background: white; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        nav { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; gap: 2rem; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background-image: url('assets/logo.png');
+            background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;
+        }
+        .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
+        nav ul { display: flex; list-style: none; gap: 0.5rem; }
+        nav button { background: none; border: none; color: var(--text-gray); font-weight: 500; font-size: 0.95rem; padding: 0.6rem 1.2rem; cursor: pointer; transition: all 0.2s ease; position: relative; }
+        nav button:hover { color: var(--primary); }
+        nav button.active { color: var(--primary); background: #fff5f7; }
+        nav button.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--primary); }
+        .cta-button { background: var(--primary); color: white; padding: 0.7rem 1.6rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease; }
+        .cta-button:hover { background: #ff4d5f; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(251,99,118,0.3); }
+        .section { display: none; }
+        .section.active { display: block; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        .hero { background: linear-gradient(135deg, #fff5f7 0%, var(--cream) 100%); padding: 3rem 2rem; text-align: center; }
+        .hero h1 { font-size: 3rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem; line-height: 1.2; }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.1rem; color: var(--text-gray); max-width: 700px; margin: 1rem auto 2rem; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .secondary-button { border: 2px solid var(--primary); color: var(--primary); padding: 0.7rem 1.6rem; font-weight: 600; background: white; cursor: pointer; transition: all 0.3s ease; }
+        .secondary-button:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+        section { padding: 3rem 2rem; }
+        .section-header { text-align: center; margin-bottom: 2rem; }
+        .section-header h2 { font-size: 2.2rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem; }
+        .section-header p { font-size: 1rem; color: var(--text-gray); max-width: 600px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .grid.tools { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .card { background: white; border: 2px solid var(--border); padding: 2rem; transition: all 0.3s ease; cursor: pointer; }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .card h3 { font-size: 1.2rem; color: var(--dark); margin-bottom: 0.75rem; font-weight: 600; }
+        .card p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; }
+        .tool-card { background: white; border: 2px solid var(--border); overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+        .tool-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-color: var(--primary); }
+        .tool-header { padding: 1.5rem; background: #f9f9f9; border-bottom: 2px solid var(--border); }
+        .tool-header h3 { color: var(--dark); margin-bottom: 0.25rem; font-size: 1.1rem; font-weight: 600; }
+        .tool-header p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 1rem; }
+        .risk-badge { display: inline-block; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .risk-low { background: #dcfce7; color: #166534; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-high { background: #fee2e2; color: #991b1b; }
+        .tool-body { padding: 1.5rem; }
+        .tool-body p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.5rem; }
+        .view-details-btn { display: inline-block; color: var(--primary); font-weight: 600; margin-top: 1rem; cursor: pointer; text-decoration: underline; }
+        .cta-section { background: linear-gradient(135deg, var(--primary) 0%, #ff7f8f 100%); color: white; text-align: center; padding: 3rem 2rem; margin: 3rem 2rem; }
+        .cta-section h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .cta-section p { font-size: 1rem; margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; opacity: 0.95; }
+        .cta-button-white { background: white; color: var(--primary); padding: 0.8rem 2rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s ease; display: inline-block; margin: 0 0.5rem; }
+        .cta-button-white:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); overflow-y: auto; }
+        .modal.active { display: flex; align-items: flex-start; justify-content: center; padding-top: 2rem; }
+        .modal-content { background-color: white; padding: 2rem; max-width: 700px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; }
+        .close-modal { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; color: var(--text-gray); cursor: pointer; }
+        .modal-header { margin-bottom: 1.5rem; padding-right: 2rem; }
+        .modal-header h2 { font-size: 1.8rem; color: var(--dark); margin-bottom: 0.5rem; }
+        .modal-header p { color: var(--text-gray); font-size: 0.95rem; }
+        .modal-body { color: var(--text-gray); line-height: 1.8; }
+        .modal-body h3 { color: var(--primary); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .modal-body p { margin-bottom: 1rem; }
+        .article-content { max-width: 800px; margin: 0 auto; color: var(--text-gray); line-height: 1.9; }
+        .article-content h1 { font-size: 2.2rem; color: var(--dark); margin-bottom: 1rem; }
+        .article-content h2 { font-size: 1.4rem; color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .article-content p { margin-bottom: 1rem; font-size: 1rem; }
+        .article-content ul, .article-content ol { margin-left: 2rem; margin-bottom: 1rem; }
+        .article-content li { margin-bottom: 0.5rem; }
+        .back-button { background: var(--primary); color: white; padding: 0.7rem 1.5rem; text-decoration: none; font-weight: 600; display: inline-block; margin-bottom: 2rem; cursor: pointer; border: none; transition: all 0.3s ease; }
+        .back-button:hover { background: #ff4d5f; transform: translateY(-2px); }
+        .filter-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0; }
+        .filter-btn { background: white; color: var(--text-gray); padding: 0.7rem 1.4rem; border: 2px solid var(--border); cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        footer { background: var(--dark); color: white; padding: 3rem 2rem; }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { margin-bottom: 1rem; font-weight: 600; }
+        .footer-section a { display: block; color: #d1d5db; text-decoration: none; margin-bottom: 0.5rem; transition: color 0.3s ease; }
+        .footer-section a:hover { color: white; }
+        .footer-bottom { border-top: 1px solid #374151; padding-top: 2rem; text-align: center; color: #d1d5db; font-size: 0.9rem; max-width: 1400px; margin: 0 auto; }
+        .framework-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2rem; }
+        .framework-item { background: white; border: 2px solid var(--border); padding: 2rem; }
+        .framework-item h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 1rem; }
+        .risk-columns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+        .risk-column { padding: 1rem; background: #f9f9f9; }
+        .risk-column h4 { font-size: 0.9rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; }
+        .risk-column p { font-size: 0.85rem; line-height: 1.5; }
+        /* Contact form */
+        .contact-form { background: #f9f9f9; border: 2px solid var(--border); padding: 2rem; margin-top: 2rem; text-align: left; }
+        .contact-form h3 { color: var(--dark); margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 700; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; font-weight: 600; color: var(--dark-gray); margin-bottom: 0.4rem; font-size: 0.95rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border);
+            font-family: inherit; font-size: 0.95rem; color: var(--dark-gray);
+            transition: border-color 0.2s ease; background: white;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-notice { font-size: 0.85rem; color: var(--text-gray); margin-top: 0.75rem; }
+        .form-success { background: #dcfce7; border: 2px solid var(--accent); color: #166534; padding: 1rem 1.5rem; margin-top: 1rem; display: none; font-weight: 600; }
+        .form-error { background: #fee2e2; border: 2px solid var(--warning); color: #991b1b; padding: 1rem 1.5rem; margin-top: 1rem; display: none; font-weight: 600; }
+        /* Loading state */
+        .loading { color: var(--text-gray); text-align: center; padding: 2rem; font-size: 1rem; }
+        @media (max-width: 768px) {
+            nav { flex-direction: column; gap: 1rem; }
+            nav ul { flex-direction: column; width: 100%; }
+            nav button { width: 100%; text-align: left; }
+            .hero h1 { font-size: 2rem; }
+            .hero-buttons { flex-direction: column; }
+            .cta-button, .secondary-button { width: 100%; }
+            .risk-columns { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="showSection('home', event)">
+                <div class="logo-icon"></div>
+                <div class="logo-text">ClickWise</div>
+            </a>
+            <ul>
+                <li><button class="nav-btn active" onclick="showSection('home', event)">Home</button></li>
+                <li><button class="nav-btn" onclick="showSection('framework', event)">Framework</button></li>
+                <li><button class="nav-btn" onclick="showSection('tools', event)">Tools</button></li>
+                <li><button class="nav-btn" onclick="showSection('guides', event)">Guides</button></li>
+                <li><button class="nav-btn" onclick="showSection('about', event)">About</button></li>
+                <li><button class="nav-btn" onclick="showSection('contact', event)">Contact</button></li>
+            </ul>
+            <button class="cta-button" onclick="showSection('tools', event)">Explore</button>
+        </nav>
+    </header>
+
+    <!-- HOME -->
+    <div id="home" class="section active">
+        <section class="hero">
+            <h1>Make <span>Informed Decisions</span> About Your Digital Tools</h1>
+            <p>ClickWise provides transparent, evidence-based evaluations of AI tools, homework platforms, and online resources students use every day.</p>
+            <div class="hero-buttons">
+                <button class="cta-button" onclick="showSection('tools', event)">Explore Database</button>
+                <button class="secondary-button" onclick="showSection('framework', event)">See Framework</button>
+            </div>
+        </section>
+        <section style="background: white; padding: 2rem;">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin: 2rem 0;">
+                    <div>
+                        <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Why ClickWise?</h3>
+                        <p style="color: var(--text-gray); margin-bottom: 1rem;">Students use digital tools daily without understanding privacy, security, and academic integrity implications.</p>
+                        <ul style="list-style: none;">
+                            <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">Transparent framework</span></li>
+                            <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">40+ tools evaluated</span></li>
+                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">Evidence-based ratings</span></li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--cream); padding: 2rem; border: 2px solid var(--primary);">
+                        <h3 style="font-size: 1.2rem; color: var(--dark); margin-bottom: 1.5rem; font-weight: 700;">5 Evaluation Criteria</h3>
+                        <div style="display: grid; gap: 0.75rem;">
+                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Data Collection</div>
+                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Data Protection</div>
+                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">3rd-Party Sharing</div>
+                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Legal Compliance</div>
+                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Academic Integrity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="background: var(--light-peach); padding: 2rem;">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
+                    <div><div id="toolCount" style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">—</div><div style="color: var(--text-gray); font-size: 0.95rem;">Tools</div></div>
+                    <div><div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">5</div><div style="color: var(--text-gray); font-size: 0.95rem;">Criteria</div></div>
+                    <div><div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">100%</div><div style="color: var(--text-gray); font-size: 0.95rem;">Transparent</div></div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="cta-section">
+                <h2>Start Making Smarter Choices</h2>
+                <p>Explore our framework and tool database to protect your privacy and academic integrity.</p>
+                <button class="cta-button-white" onclick="showSection('tools', event)">Explore Tools</button>
+                <button class="cta-button-white" onclick="showSection('framework', event)">View Framework</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FRAMEWORK -->
+    <div id="framework" class="section">
+        <section class="hero" style="padding: 2.5rem 2rem;">
+            <h1>Our Evaluation <span>Framework</span></h1>
+            <p>Every tool assessed using five concrete criteria. Transparent. Reproducible. Evidence-based.</p>
+        </section>
+        <section style="background: white;">
+            <div class="container">
+                <div class="section-header">
+                    <h2>How We Evaluate Tools</h2>
+                    <p>Our framework directly impacts student privacy, security, and academic success.</p>
+                </div>
+                <div class="framework-grid">
+                    <div class="framework-item">
+                        <h3>1. Data Collection</h3>
+                        <p style="margin-bottom: 1rem;">How much personal information does the tool require? Can you use it without creating an account?</p>
+                        <div class="risk-columns">
+                            <div class="risk-column"><h4>LOW RISK</h4><p>Asks for minimal personal info. User can access features anonymously or with basic account.</p></div>
+                            <div class="risk-column"><h4>MEDIUM RISK</h4><p>Requires basic account (name, email). May ask for age/grade. Some tracking of usage patterns.</p></div>
+                            <div class="risk-column"><h4>HIGH RISK</h4><p>Excessive requests for personal info. Requires full profile for basic use. Aggressive data harvesting.</p></div>
+                        </div>
+                    </div>
+                    <div class="framework-item">
+                        <h3>2. Data Protection & Encryption</h3>
+                        <p style="margin-bottom: 1rem;">Does the site use HTTPS? Is there a clear privacy policy? Have they had data breaches?</p>
+                        <div class="risk-columns">
+                            <div class="risk-column"><h4>LOW RISK</h4><p>Clear, transparent privacy policy. Uses HTTPS. Encrypts data in transit. 3rd party security audits available.</p></div>
+                            <div class="risk-column"><h4>MEDIUM RISK</h4><p>Has privacy policy but it's complex/unclear. Uses HTTPS. Limited 3rd party audits.</p></div>
+                            <div class="risk-column"><h4>HIGH RISK</h4><p>No clear privacy policy. No HTTPS. Data transmitted unencrypted. Data breaches in history.</p></div>
+                        </div>
+                    </div>
+                    <div class="framework-item">
+                        <h3>3. Third-Party Data Sharing</h3>
+                        <p style="margin-bottom: 1rem;">Do they sell your data? Who are their 'partners'? Can you opt-out of tracking?</p>
+                        <div class="risk-columns">
+                            <div class="risk-column"><h4>LOW RISK</h4><p>Explicitly states they DO NOT sell data. No ads or minimal, non-invasive ads. No tracking pixels.</p></div>
+                            <div class="risk-column"><h4>MEDIUM RISK</h4><p>Unclear about data sharing. May share with 'trusted partners.' Ads present but not excessive.</p></div>
+                            <div class="risk-column"><h4>HIGH RISK</h4><p>Openly sells data to advertisers. Aggressive ad networks. Heavy tracking. No opt-out.</p></div>
+                        </div>
+                    </div>
+                    <div class="framework-item">
+                        <h3>4. Legal Compliance (COPPA, FERPA, etc.)</h3>
+                        <p style="margin-bottom: 1rem;">Is it COPPA-compliant (safe for under 13)? Is it FERPA-compliant (protects student records)?</p>
+                        <div class="risk-columns">
+                            <div class="risk-column"><h4>LOW RISK</h4><p>Explicitly complies with COPPA and FERPA. Privacy-by-design. Age-appropriate safety features.</p></div>
+                            <div class="risk-column"><h4>MEDIUM RISK</h4><p>States compliance but not well-documented. May only partially follow COPPA/FERPA.</p></div>
+                            <div class="risk-column"><h4>HIGH RISK</h4><p>No mention of COPPA/FERPA compliance. Violates student privacy laws. No age-appropriate safeguards.</p></div>
+                        </div>
+                    </div>
+                    <div class="framework-item">
+                        <h3>5. Academic Integrity Design</h3>
+                        <p style="margin-bottom: 1rem;">Does it teach you or just give answers? Is it designed for learning or shortcuts?</p>
+                        <div class="risk-columns">
+                            <div class="risk-column"><h4>LOW RISK</h4><p>Designed to TEACH concepts. Guides you to answers (Socratic method). Encourages learning over shortcuts.</p></div>
+                            <div class="risk-column"><h4>MEDIUM RISK</h4><p>Mix of learning tools and potential shortcuts. Could enable cheating if misused.</p></div>
+                            <div class="risk-column"><h4>HIGH RISK</h4><p>Designed primarily for plagiarism/cheating. Direct essay writing, answer copying. No learning value.</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: var(--cream); border: 2px solid var(--primary); padding: 2rem; margin-top: 2rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem;">Overall Risk Rating Scale</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+                        <div style="padding: 1.5rem; background: #f0fdf4; border: 2px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">Low Risk</h4>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Safe to use. Transparent privacy practices. Designed for learning.</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: #fefce8; border: 2px solid #f59e0b;">
+                            <h4 style="color: #f59e0b; font-size: 1.1rem; margin-bottom: 0.5rem;">Medium Risk</h4>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Use with caution. Review privacy settings. Follow school guidelines.</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: #fef2f2; border: 2px solid var(--warning);">
+                            <h4 style="color: var(--warning); font-size: 1.1rem; margin-bottom: 0.5rem;">High Risk</h4>
+                            <p style="color: var(--text-gray); font-size: 0.9rem;">Avoid if possible. Privacy violations, cheating facilitation, or security issues.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- TOOLS -->
+    <div id="tools" class="section">
+        <section class="hero" style="padding: 2.5rem 2rem;">
+            <h1>Tool <span>Database</span></h1>
+            <p>Evaluated tools with verified privacy policies and specific website names.</p>
+        </section>
+        <section style="background: white;">
+            <div class="container">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterTools('all', event)">All</button>
+                    <button class="filter-btn" onclick="filterTools('low', event)">Low Risk</button>
+                    <button class="filter-btn" onclick="filterTools('medium', event)">Medium Risk</button>
+                    <button class="filter-btn" onclick="filterTools('high', event)">High Risk</button>
+                </div>
+                <div id="toolsContainer" class="grid tools" style="margin-top: 2rem;">
+                    <p class="loading">Loading tools...</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- GUIDES -->
+    <div id="guides" class="section">
+        <section class="hero" style="padding: 2.5rem 2rem;">
+            <h1>Digital Literacy <span>Guides</span></h1>
+            <p>Learn how to stay safe, protect your privacy, and make informed decisions about digital tools.</p>
+        </section>
+        <section style="background: white; padding: 3rem 2rem;">
+            <div class="container article-content" id="guide-content">
+                <p class="loading">Loading guides...</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="about" class="section">
+        <section class="hero" style="padding: 2.5rem 2rem;">
+            <h1>About <span>ClickWise</span></h1>
+            <p>A student-led project dedicated to digital literacy and transparent tool evaluation.</p>
+        </section>
+        <section style="background: white; padding: 3rem 2rem;">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto;">
+
+                    <!-- Profile area -->
+                    <div style="display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: start; margin-bottom: 3rem;">
+                        <!-- Photo placeholder -->
+                        <div style="background: var(--cream); border: 2px dashed var(--primary); width: 280px; height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;">
+                            <div style="font-size: 3rem;">📷</div>
+                            <p style="color: var(--text-gray); font-size: 0.85rem; text-align: center; padding: 0 1rem;">Add your photo here</p>
+                        </div>
+                        <!-- Bio placeholder -->
+                        <div>
+                            <h2 style="font-size: 1.8rem; color: var(--dark); font-weight: 700; margin-bottom: 0.5rem;">Your Name</h2>
+                            <p style="color: var(--primary); font-weight: 600; margin-bottom: 1.5rem;">Founder, ClickWise</p>
+                            <div style="background: #f9f9f9; border: 2px dashed var(--border); padding: 1.5rem; color: var(--text-gray); font-style: italic; line-height: 1.8;">
+                                <p>Add your bio here — who you are, why you built ClickWise, what you care about. This is a great place to talk about your background, your school, and your interest in digital literacy and student privacy.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mission statement -->
+                    <div style="background: var(--cream); border: 2px solid var(--primary); padding: 2rem; margin-bottom: 2rem;">
+                        <h3 style="color: var(--primary); font-size: 1.3rem; margin-bottom: 1rem;">The Mission</h3>
+                        <p style="color: var(--text-gray); line-height: 1.8;">ClickWise exists to help students make informed decisions about the digital tools they use every day. We believe transparency around data privacy, security, and academic integrity should be accessible to everyone — not buried in legal jargon.</p>
+                    </div>
+
+                    <!-- CTA -->
+                    <div style="text-align: center; padding: 1rem 0;">
+                        <button class="cta-button" onclick="showSection('contact', event)" style="margin-right: 1rem;">Get in Touch</button>
+                        <button class="secondary-button" onclick="showSection('tools', event)">Explore Tools</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="section">
+        <section class="hero" style="padding: 2.5rem 2rem;">
+            <h1>Get in <span>Touch</span></h1>
+            <p>Questions, feedback, or want to get involved? We'd love to hear from you.</p>
+        </section>
+        <section style="background: white;">
+            <div class="container">
+                <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                    <div style="margin-bottom: 2rem; padding: 2rem; background: var(--cream); border: 2px solid var(--primary);">
+                        <h3 style="color: var(--dark); margin-bottom: 0.75rem; font-size: 1.2rem; font-weight: 700;">Email Us</h3>
+                        <p style="color: var(--primary); font-size: 1.1rem; font-weight: 600;">contact@clickwise.org</p>
+                        <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 0.5rem;">We respond to all inquiries within 24 hours.</p>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
+                        <h3>Send Us a Message</h3>
+                        <div class="form-group">
+                            <label for="contactName">Name</label>
+                            <input type="text" id="contactName" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" placeholder="Your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Send Message</button>
+                        <div class="form-success" id="formSuccess">Message sent! We'll get back to you within 24 hours.</div>
+                        <div class="form-error" id="formError">Something went wrong. Please try again.</div>
+                    </form>
+
+                    <div style="margin-top: 2rem;">
+                        <h3 style="color: var(--dark); margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 700;">Get Involved</h3>
+                        <div style="background: #f9f9f9; padding: 2rem; border: 2px solid var(--border); width: 100%;">
+                            <p style="color: var(--text-gray); margin-bottom: 1.5rem;"><strong>We're looking for:</strong></p>
+                            <ul style="list-style: none; color: var(--text-gray); text-align: left; display: inline-block;">
+                                <li style="margin-bottom: 1rem;">Research & Tool Evaluation</li>
+                                <li style="margin-bottom: 1rem;">Content Creation & Writing</li>
+                                <li>Design & Web Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL -->
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeToolModal()">✕</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>ClickWise</h4>
+                <a href="#" onclick="showSection('home', event)">Home</a>
+                <a href="#" onclick="showSection('about', event)">About</a>
+                <a href="#" onclick="showSection('contact', event)">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <a href="#" onclick="showSection('tools', event)">Tool Database</a>
+                <a href="#" onclick="showSection('guides', event)">Guides</a>
+                <a href="#" onclick="showSection('framework', event)">Framework</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ClickWise. A student-led nonprofit for digital literacy and safety.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ── Navigation ──────────────────────────────────────────────────────────
+        function showSection(sectionId, event) {
+            if (event) event.preventDefault();
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            const btnIndex = ['home', 'framework', 'tools', 'guides', 'about', 'contact'].indexOf(sectionId);
+            const navBtns = document.querySelectorAll('.nav-btn');
+            if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
+            window.scrollTo(0, 0);
+            if (sectionId === 'guides') loadGuideList();
+        }
+
+        // ── Tools ───────────────────────────────────────────────────────────────
+        let allTools = [];
+
+        async function loadTools() {
+            try {
+                const res = await fetch('/api/tools');
+                allTools = await res.json();
+                renderTools(allTools);
+                const countEl = document.getElementById('toolCount');
+                if (countEl) countEl.textContent = allTools.length;
+            } catch (err) {
+                document.getElementById('toolsContainer').innerHTML =
+                    '<p style="color:var(--warning);text-align:center;padding:2rem;">Failed to load tools. Is the server running?</p>';
+            }
+        }
+
+        function renderTools(tools) {
+            const container = document.getElementById('toolsContainer');
+            if (!tools.length) {
+                container.innerHTML = '<p class="loading">No tools found.</p>';
+                return;
+            }
+            container.innerHTML = tools.map(tool => {
+                const riskLabel = tool.risk.charAt(0).toUpperCase() + tool.risk.slice(1);
+                return `
+                    <div class="tool-card" data-risk="${tool.risk}" onclick="openToolModal('${tool.id}')">
+                        <div class="tool-header">
+                            <h3>${tool.name}</h3>
+                            <p>${tool.site}</p>
+                            <span class="risk-badge risk-${tool.risk}">${riskLabel} Risk</span>
+                        </div>
+                        <div class="tool-body">
+                            <p>${tool.summary}</p>
+                            <p class="view-details-btn">View Details →</p>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function filterTools(risk, event) {
+            event.preventDefault();
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            if (risk === 'all') {
+                renderTools(allTools);
+            } else {
+                renderTools(allTools.filter(t => t.risk === risk));
+            }
+        }
+
+        async function openToolModal(toolId) {
+            document.getElementById('modalBody').innerHTML = '<p class="loading">Loading...</p>';
+            document.getElementById('toolModal').classList.add('active');
+            try {
+                const res = await fetch(`/api/tools/${toolId}`);
+                const tool = await res.json();
+                const riskLabel = tool.risk.charAt(0).toUpperCase() + tool.risk.slice(1);
+                document.getElementById('modalBody').innerHTML =
+                    `<div class="modal-header">
+                        <h2>${tool.name}</h2>
+                        <p>${tool.site}</p>
+                        <span class="risk-badge risk-${tool.risk}" style="margin-top:0.5rem;display:inline-block">${riskLabel} Risk</span>
+                    </div>
+                    <div class="modal-body">${tool.content}</div>`;
+            } catch (err) {
+                document.getElementById('modalBody').innerHTML =
+                    '<p style="color:var(--warning);">Failed to load tool details.</p>';
+            }
+        }
+
+        function closeToolModal() {
+            document.getElementById('toolModal').classList.remove('active');
+        }
+
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('toolModal')) closeToolModal();
+        });
+
+        // ── Guides ──────────────────────────────────────────────────────────────
+        async function loadGuideList() {
+            const container = document.getElementById('guide-content');
+            container.innerHTML = '<p class="loading">Loading guides...</p>';
+            try {
+                const res = await fetch('/api/guides');
+                const guides = await res.json();
+                container.innerHTML =
+                    `<p style="margin-bottom: 2rem; color: var(--text-gray); font-size: 1.2rem; font-weight: 500;">Click on any guide below to read the full article.</p>
+                    <div class="grid" style="max-width: 900px;">
+                        ${guides.map(g => `
+                            <div class="card" onclick="loadGuide('${g.id}')">
+                                <h3>${g.title}</h3>
+                                <p>${g.description}</p>
+                            </div>`).join('')}
+                    </div>`;
+            } catch (err) {
+                container.innerHTML = '<p style="color:var(--warning);">Failed to load guides.</p>';
+            }
+        }
+
+        async function loadGuide(guideId) {
+            const container = document.getElementById('guide-content');
+            container.innerHTML = '<p class="loading">Loading guide...</p>';
+            try {
+                const res = await fetch(`/api/guides/${guideId}`);
+                const guide = await res.json();
+                container.innerHTML =
+                    `<button class="back-button" onclick="loadGuideList()">← Back to Guides</button>
+                    ${guide.content}`;
+            } catch (err) {
+                container.innerHTML = '<p style="color:var(--warning);">Failed to load guide.</p>';
+            }
+        }
+
+        // ── Contact Form ────────────────────────────────────────────────────────
+        async function submitContact(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+            const successEl = document.getElementById('formSuccess');
+            const errorEl = document.getElementById('formError');
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+            try {
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+                if (res.ok) {
+                    document.getElementById('contactForm').reset();
+                    successEl.style.display = 'block';
+                } else {
+                    const data = await res.json();
+                    errorEl.textContent = data.error || 'Something went wrong. Please try again.';
+                    errorEl.style.display = 'block';
+                }
+            } catch (err) {
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // ── Init ────────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTools();
+            loadGuideList();
+        });
+    </script>
+</body>
+</html>
