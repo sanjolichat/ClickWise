@@ -367,12 +367,6 @@
         <section style="background: white;">
             <div class="container">
                 <div style="max-width: 700px; margin: 0 auto; text-align: center;">
-                    <div style="margin-bottom: 2rem; padding: 2rem; background: var(--cream); border: 2px solid var(--primary);">
-                        <h3 style="color: var(--dark); margin-bottom: 0.75rem; font-size: 1.2rem; font-weight: 700;">Email Us</h3>
-                        <p style="color: var(--primary); font-size: 1.1rem; font-weight: 600;">contact@clickwise.org</p>
-                        <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 0.5rem;">We respond to all inquiries within 24 hours.</p>
-                    </div>
-
                     <!-- Contact Form -->
                     <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
                         <h3>Send Us a Message</h3>
@@ -440,7 +434,7 @@
 
     <script>
         // ── Navigation ──────────────────────────────────────────────────────────
-        function showSection(sectionId, event) {
+        function showSection(sectionId, event, skipPush = false) {
             if (event) event.preventDefault();
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -449,7 +443,10 @@
             const navBtns = document.querySelectorAll('.nav-btn');
             if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
             window.scrollTo(0, 0);
-            history.replaceState(null, '', '/');
+            if (!skipPush) {
+                const path = sectionId === 'home' ? window.location.origin : '/' + sectionId;
+                history.pushState(null, '', path);
+            }
             if (sectionId === 'guides') loadGuideList();
         }
 
@@ -599,9 +596,15 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadTools();
             loadGuideList();
-            const hash = window.location.hash.slice(1);
-            const valid = ['home', 'framework', 'tools', 'guides', 'about', 'contact'];
-            if (hash && valid.includes(hash)) showSection(hash, null);
+            const valid = ['framework', 'tools', 'guides', 'about', 'contact'];
+            const pathSection = window.location.pathname.slice(1);
+            if (pathSection && valid.includes(pathSection)) showSection(pathSection, null, true);
+
+            window.addEventListener('popstate', () => {
+                const ps = window.location.pathname.slice(1);
+                const sec = (ps && valid.includes(ps)) ? ps : 'home';
+                showSection(sec, null, true);
+            });
         });
     </script>
 </body>

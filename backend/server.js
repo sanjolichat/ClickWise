@@ -1,7 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const db = require('./db');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -64,6 +71,16 @@ app.post('/api/contact', (req, res) => {
     const result = db.prepare(
         'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
     ).run(name.trim(), email.trim(), message.trim());
+
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+        transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: process.env.NOTIFY_TO || process.env.SMTP_USER,
+            subject: `ClickWise contact from ${name}`,
+            text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+        }).catch(err => console.error('Email send failed:', err));
+    }
+
     res.status(201).json({ success: true, id: result.lastInsertRowid });
 });
 
