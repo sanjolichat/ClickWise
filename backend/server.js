@@ -89,6 +89,28 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+// ── Test email ───────────────────────────────────────────────────────────────
+// GET /api/test-email  – hit this URL to verify SMTP credentials work
+app.get('/api/test-email', async (req, res) => {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return res.status(500).json({ error: 'SMTP_USER or SMTP_PASS env var is not set.' });
+    }
+    try {
+        await transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: process.env.NOTIFY_TO || process.env.SMTP_USER,
+            subject: 'ClickWise – test email',
+            text: 'If you received this, SMTP is working correctly.'
+        });
+        res.json({ success: true, to: process.env.NOTIFY_TO || process.env.SMTP_USER });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`ClickWise running at http://localhost:${PORT}`);
+    console.log(`SMTP configured: ${!!(process.env.SMTP_USER && process.env.SMTP_PASS)}`);
+    if (process.env.SMTP_USER) console.log(`SMTP_USER: ${process.env.SMTP_USER}`);
+    if (process.env.NOTIFY_TO) console.log(`NOTIFY_TO: ${process.env.NOTIFY_TO}`);
 });
