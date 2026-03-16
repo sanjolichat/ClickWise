@@ -1,2 +1,4 @@
 backend/node_modules/
 backend/clickwise.db
+backend/clickwise.db-shm
+backend/clickwise.db-wal
