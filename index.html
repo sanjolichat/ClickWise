@@ -18,7 +18,7 @@
         .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; }
         .logo-icon {
             width: 44px; height: 44px;
-            background-image: url('assets/logo.png');
+            background-image: url('frontend/assets/logo.png');
             background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;
         }
         .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
@@ -334,7 +334,7 @@
                     <!-- Profile area -->
                     <div style="display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: start; margin-bottom: 3rem;">
                         <!-- Photo -->
-                        <img src="assets/profile.jpg" alt="Sanjoli Chattopadhyay"
+                        <img src="frontend/assets/profile.jpg" alt="Sanjoli Chattopadhyay"
                              style="width: 280px; height: 320px; object-fit: cover; object-position: center top; display: block; border: 2px solid var(--border);">
                         <!-- Bio -->
                         <div>
@@ -433,6 +433,7 @@
             const btnIndex = ['home', 'framework', 'tools', 'guides', 'about', 'contact'].indexOf(sectionId);
             if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
             window.scrollTo(0, 0);
+            history.replaceState(null, '', '#' + sectionId);
         }
 
         // ── Tools filter ────────────────────────────────────────────────────────
@@ -513,6 +514,12 @@
                     <div class="card" onclick="loadGuide('critical-thinking')"><h3>Critical Thinking with AI</h3><p>AI makes mistakes. Learn to verify information and think critically.</p></div>
                 </div>`;
         }
+        // ── Restore section on refresh ───────────────────────────────────────
+        (function() {
+            const hash = window.location.hash.slice(1);
+            const valid = ['home', 'framework', 'tools', 'guides', 'about', 'contact'];
+            if (hash && valid.includes(hash)) showSection(hash, null);
+        })();
     </script>
 </body>
 </html>

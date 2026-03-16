@@ -448,6 +448,7 @@
             const navBtns = document.querySelectorAll('.nav-btn');
             if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
             window.scrollTo(0, 0);
+            history.replaceState(null, '', '#' + sectionId);
             if (sectionId === 'guides') loadGuideList();
         }
 
@@ -597,6 +598,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadTools();
             loadGuideList();
+            const hash = window.location.hash.slice(1);
+            const valid = ['home', 'framework', 'tools', 'guides', 'about', 'contact'];
+            if (hash && valid.includes(hash)) showSection(hash, null);
         });
     </script>
 </body>
