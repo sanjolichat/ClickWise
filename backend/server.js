@@ -6,7 +6,9 @@ const nodemailer = require('nodemailer');
 const db = require('./db');
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,          // STARTTLS – works on most hosting platforms
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
 });
 
