@@ -86,11 +86,6 @@ app.post('/api/contact', (req, res) => {
     res.status(201).json({ success: true, id: result.lastInsertRowid });
 });
 
-// ── Catch-all ────────────────────────────────────────────────────────────────
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/index.html'));
-});
-
 // ── Test email ───────────────────────────────────────────────────────────────
 // GET /api/test-email  – hit this URL to verify SMTP credentials work
 app.get('/api/test-email', async (req, res) => {
@@ -108,6 +103,11 @@ app.get('/api/test-email', async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+});
+
+// ── Catch-all ────────────────────────────────────────────────────────────────
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 app.listen(PORT, () => {
