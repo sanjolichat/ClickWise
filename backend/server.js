@@ -5,7 +5,7 @@ const path = require('path');
 const { Resend } = require('resend');
 const db = require('./db');
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -69,7 +69,7 @@ app.post('/api/contact', (req, res) => {
         'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
     ).run(name.trim(), email.trim(), message.trim());
 
-    if (resend && process.env.NOTIFY_TO) {
+    if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
         resend.emails.send({
             from: 'ClickWise <onboarding@resend.dev>',
             to: process.env.NOTIFY_TO,
