@@ -2,18 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const db = require('./db');
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    connectionTimeout: 15000,
-    greetingTimeout: 15000,
-    socketTimeout: 15000,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -77,10 +69,10 @@ app.post('/api/contact', (req, res) => {
         'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
     ).run(name.trim(), email.trim(), message.trim());
 
-    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
-        transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: process.env.NOTIFY_TO || process.env.SMTP_USER,
+    if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
+        resend.emails.send({
+            from: 'ClickWise <onboarding@resend.dev>',
+            to: process.env.NOTIFY_TO,
             subject: `ClickWise contact from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
         }).catch(err => console.error('Email send failed:', err));
@@ -90,19 +82,22 @@ app.post('/api/contact', (req, res) => {
 });
 
 // ── Test email ───────────────────────────────────────────────────────────────
-// GET /api/test-email  – hit this URL to verify SMTP credentials work
+// GET /api/test-email  – hit this URL to verify Resend is working
 app.get('/api/test-email', async (req, res) => {
-    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        return res.status(500).json({ error: 'SMTP_USER or SMTP_PASS env var is not set.' });
+    if (!process.env.RESEND_API_KEY) {
+        return res.status(500).json({ error: 'RESEND_API_KEY env var is not set.' });
+    }
+    if (!process.env.NOTIFY_TO) {
+        return res.status(500).json({ error: 'NOTIFY_TO env var is not set.' });
     }
     try {
-        await transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: process.env.NOTIFY_TO || process.env.SMTP_USER,
+        await resend.emails.send({
+            from: 'ClickWise <onboarding@resend.dev>',
+            to: process.env.NOTIFY_TO,
             subject: 'ClickWise – test email',
-            text: 'If you received this, SMTP is working correctly.'
+            text: 'If you received this, Resend is working correctly.'
         });
-        res.json({ success: true, to: process.env.NOTIFY_TO || process.env.SMTP_USER });
+        res.json({ success: true, to: process.env.NOTIFY_TO });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -115,7 +110,6 @@ app.get('*', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`ClickWise running at http://localhost:${PORT}`);
-    console.log(`SMTP configured: ${!!(process.env.SMTP_USER && process.env.SMTP_PASS)}`);
-    if (process.env.SMTP_USER) console.log(`SMTP_USER: ${process.env.SMTP_USER}`);
+    console.log(`Resend configured: ${!!process.env.RESEND_API_KEY}`);
     if (process.env.NOTIFY_TO) console.log(`NOTIFY_TO: ${process.env.NOTIFY_TO}`);
 });
