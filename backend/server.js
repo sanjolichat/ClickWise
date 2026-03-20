@@ -71,8 +71,9 @@ app.post('/api/contact', (req, res) => {
 
     if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
         resend.emails.send({
-            from: 'ClickWise <onboarding@resend.dev>',
+            from: 'ClickWise <contact@clickwise.us>',
             to: process.env.NOTIFY_TO,
+            reply_to: email,
             subject: `ClickWise contact from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
         }).catch(err => console.error('Email send failed:', err));
@@ -92,7 +93,7 @@ app.get('/api/test-email', async (req, res) => {
     }
     try {
         await resend.emails.send({
-            from: 'ClickWise <onboarding@resend.dev>',
+            from: 'ClickWise <contact@clickwise.us>',
             to: process.env.NOTIFY_TO,
             subject: 'ClickWise – test email',
             text: 'If you received this, Resend is working correctly.'
