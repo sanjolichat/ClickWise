@@ -74,7 +74,7 @@ app.post('/api/contact', (req, res) => {
         const emailSafe = email.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const messageSafe = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
         resend.emails.send({
-            from: 'ClickWise <contact@clickwise.us>',
+            from: 'ClickWise <noreply@clickwise.us>',
             to: process.env.NOTIFY_TO,
             replyTo: email,
             subject: `ClickWise contact from ${name}`,
@@ -109,7 +109,7 @@ app.get('/api/test-email', async (req, res) => {
     }
     try {
         await resend.emails.send({
-            from: 'ClickWise <contact@clickwise.us>',
+            from: 'ClickWise <noreply@clickwise.us>',
             to: process.env.NOTIFY_TO,
             subject: 'ClickWise – test email',
             text: 'If you received this, Resend is working correctly.'
