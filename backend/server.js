@@ -73,7 +73,7 @@ app.post('/api/contact', (req, res) => {
         resend.emails.send({
             from: 'ClickWise <contact@clickwise.us>',
             to: process.env.NOTIFY_TO,
-            reply_to: email,
+            replyTo: email,
             subject: `ClickWise contact from ${name}`,
             text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
         }).catch(err => console.error('Email send failed:', err));
