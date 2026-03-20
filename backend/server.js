@@ -69,32 +69,55 @@ app.post('/api/contact', (req, res) => {
         'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
     ).run(name.trim(), email.trim(), message.trim());
 
-    if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
+    if (process.env.RESEND_API_KEY) {
         const nameSafe = name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const emailSafe = email.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const messageSafe = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
         const dateSafe = new Date().toLocaleString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric', hour:'numeric', minute:'2-digit', hour12:true });
-        resend.emails.send({
-            from: 'ClickWise <noreply@clickwise.us>',
-            to: process.env.NOTIFY_TO,
-            replyTo: email,
-            subject: `ClickWise contact from ${name}`,
-            text: `${name} (${email})\n${dateSafe}\n\n${message}`,
-            html: `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
-                    <div style="border-bottom:2px solid #FB6376;padding-bottom:12px;margin-bottom:20px;">
-                        <span style="font-size:18px;font-weight:700;color:#5D2A42;">ClickWise</span>
+        const firstName = name.trim().split(/\s+/)[0];
+
+        // Notification to owner
+        if (process.env.NOTIFY_TO) {
+            resend.emails.send({
+                from: 'ClickWise <noreply@clickwise.us>',
+                to: process.env.NOTIFY_TO,
+                replyTo: email,
+                subject: `New contact: ${name}`,
+                text: `${name} (${email})\n${dateSafe}\n\n${message}`,
+                html: `
+                    <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+                        <div style="border-bottom:2px solid #FB6376;padding-bottom:12px;margin-bottom:20px;">
+                            <span style="font-size:18px;font-weight:700;color:#5D2A42;">ClickWise</span>
+                        </div>
+                        <p style="font-size:15px;margin:0 0 4px;color:#374151;">
+                            <strong>${nameSafe}</strong> &lt;${emailSafe}&gt;
+                        </p>
+                        <p style="font-size:13px;margin:0 0 16px;color:#6b7280;">${dateSafe}</p>
+                        <div style="background:#FFF9EC;border-left:3px solid #FB6376;padding:16px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:15px;line-height:1.7;color:#1f2937;">
+                            ${messageSafe}
+                        </div>
                     </div>
-                    <p style="font-size:15px;margin:0 0 4px;color:#374151;">
-                        <strong>${nameSafe}</strong> &lt;${emailSafe}&gt;
-                    </p>
-                    <p style="font-size:13px;margin:0 0 16px;color:#6b7280;">${dateSafe}</p>
-                    <div style="background:#FFF9EC;border-left:3px solid #FB6376;padding:16px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:15px;line-height:1.7;color:#1f2937;">
-                        ${messageSafe}
+                `
+            }).catch(err => console.error('Notification email failed:', err));
+        }
+
+        // Auto-reply confirmation to submitter
+        resend.emails.send({
+            from: 'Sanjoli C <noreply@clickwise.us>',
+            to: email,
+            subject: `RE: ClickWise \u2014 thanks for reaching out, ${firstName}`,
+            text: `Hello ${firstName},\n\nThank you so much for reaching out. I really appreciate you taking the time to explore ClickWise. I\u2019ll be in touch soon!\n\nBest,\nSanjoli C`,
+            html: `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;font-size:15px;line-height:1.7;">
+                    <p style="margin:0 0 16px;">Hello ${nameSafe},</p>
+                    <p style="margin:0 0 16px;">Thank you so much for reaching out. I really appreciate you taking the time to explore ClickWise. I&rsquo;ll be in touch soon!</p>
+                    <p style="margin:0 0 32px;">Best,<br>Sanjoli C</p>
+                    <div style="border-top:1px solid #e5e7eb;padding-top:16px;">
+                        <span style="font-size:13px;font-weight:700;color:#5D2A42;">ClickWise</span>
                     </div>
                 </div>
             `
-        }).catch(err => console.error('Email send failed:', err));
+        }).catch(err => console.error('Confirmation email failed:', err));
     }
 
     res.status(201).json({ success: true, id: result.lastInsertRowid });
