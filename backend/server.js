@@ -70,12 +70,30 @@ app.post('/api/contact', (req, res) => {
     ).run(name.trim(), email.trim(), message.trim());
 
     if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
+        const nameSafe = name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const emailSafe = email.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const messageSafe = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
         resend.emails.send({
             from: 'ClickWise <contact@clickwise.us>',
             to: process.env.NOTIFY_TO,
             replyTo: email,
             subject: `ClickWise contact from ${name}`,
-            text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+            text: `New message from ${name} (${email}):\n\n${message}`,
+            html: `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+                    <div style="border-bottom:2px solid #FB6376;padding-bottom:12px;margin-bottom:20px;">
+                        <span style="font-size:18px;font-weight:700;color:#5D2A42;">ClickWise</span>
+                        <span style="font-size:13px;color:#6b7280;margin-left:8px;">New Contact Submission</span>
+                    </div>
+                    <p style="font-size:15px;margin:0 0 16px;color:#374151;">
+                        <strong>${nameSafe}</strong> &lt;${emailSafe}&gt;
+                    </p>
+                    <div style="background:#FFF9EC;border-left:3px solid #FB6376;padding:16px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:15px;line-height:1.7;color:#1f2937;">
+                        ${messageSafe}
+                    </div>
+                    <p style="font-size:12px;color:#9ca3af;margin:0;">Hit reply to respond directly to ${nameSafe}.</p>
+                </div>
+            `
         }).catch(err => console.error('Email send failed:', err));
     }
 
