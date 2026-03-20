@@ -219,9 +219,4 @@ const insertGuide = db.prepare(`
 const seedGuides = db.transaction(() => { for (const g of guideSeed) insertGuide.run(g); });
 seedGuides();
 
-// Migrate: add reply_token column if not present
-try {
-    db.prepare('ALTER TABLE contact_submissions ADD COLUMN reply_token TEXT').run();
-} catch (_) {}
-
 module.exports = db;

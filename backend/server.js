@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const crypto = require('crypto');
 const { Resend } = require('resend');
 const db = require('./db');
 
@@ -70,13 +69,7 @@ app.post('/api/contact', (req, res) => {
         'INSERT INTO contact_submissions (name, email, message) VALUES (?, ?, ?)'
     ).run(name.trim(), email.trim(), message.trim());
 
-    const replyToken = crypto.randomBytes(20).toString('hex');
-    db.prepare('UPDATE contact_submissions SET reply_token = ? WHERE id = ?')
-      .run(replyToken, result.lastInsertRowid);
-
     if (process.env.RESEND_API_KEY && process.env.NOTIFY_TO) {
-        const appUrl = process.env.APP_URL || '';
-        const replyUrl = `${appUrl}/reply?id=${result.lastInsertRowid}&token=${replyToken}`;
         const nameSafe = name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const emailSafe = email.replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const messageSafe = message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
@@ -85,16 +78,20 @@ app.post('/api/contact', (req, res) => {
             to: process.env.NOTIFY_TO,
             replyTo: email,
             subject: `ClickWise contact from ${name}`,
-            text: `${name} (${email}) sent a message:\n\n${message}\n\nReply here: ${replyUrl}`,
+            text: `New message from ${name} (${email}):\n\n${message}`,
             html: `
-                <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
-                    <p style="font-size:16px;margin-bottom:8px;"><strong>${nameSafe}</strong> &lt;${emailSafe}&gt; sent a message via ClickWise:</p>
-                    <blockquote style="border-left:3px solid #4ade80;margin:0;padding:12px 16px;background:#f9fafb;font-size:15px;line-height:1.6;">
-                        ${messageSafe}
-                    </blockquote>
-                    <p style="margin-top:24px;">
-                        <a href="${replyUrl}" style="background:#4ade80;color:#1a1a1a;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600;">Reply as contact@clickwise.us</a>
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;">
+                    <div style="border-bottom:2px solid #4ade80;padding-bottom:12px;margin-bottom:20px;">
+                        <span style="font-size:18px;font-weight:700;color:#1a1a1a;">ClickWise</span>
+                        <span style="font-size:13px;color:#6b7280;margin-left:8px;">New Contact Submission</span>
+                    </div>
+                    <p style="font-size:15px;margin:0 0 16px;color:#374151;">
+                        <strong>${nameSafe}</strong> &lt;${emailSafe}&gt;
                     </p>
+                    <div style="background:#f9fafb;border-left:3px solid #4ade80;padding:16px;border-radius:0 8px 8px 0;margin-bottom:20px;font-size:15px;line-height:1.7;color:#1f2937;">
+                        ${messageSafe}
+                    </div>
+                    <p style="font-size:12px;color:#9ca3af;margin:0;">Hit reply to respond directly to ${nameSafe}.</p>
                 </div>
             `
         }).catch(err => console.error('Email send failed:', err));
@@ -120,42 +117,6 @@ app.get('/api/test-email', async (req, res) => {
             text: 'If you received this, Resend is working correctly.'
         });
         res.json({ success: true, to: process.env.NOTIFY_TO });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// ── Reply ────────────────────────────────────────────────────────────────────
-
-// GET /reply – serve the reply page
-app.get('/reply', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/reply.html'));
-});
-
-// GET /api/reply-info?id=X&token=Y
-app.get('/api/reply-info', (req, res) => {
-    const { id, token } = req.query;
-    const sub = db.prepare('SELECT name, email, message FROM contact_submissions WHERE id = ? AND reply_token = ?').get(id, token);
-    if (!sub) return res.status(403).json({ error: 'Invalid or expired link.' });
-    res.json(sub);
-});
-
-// POST /api/reply
-app.post('/api/reply', async (req, res) => {
-    const { id, token, replyText } = req.body;
-    if (!replyText || !replyText.trim()) return res.status(400).json({ error: 'Reply text is required.' });
-    const sub = db.prepare('SELECT name, email FROM contact_submissions WHERE id = ? AND reply_token = ?').get(id, token);
-    if (!sub) return res.status(403).json({ error: 'Invalid or expired link.' });
-    try {
-        await resend.emails.send({
-            from: 'ClickWise <contact@clickwise.us>',
-            to: sub.email,
-            replyTo: 'contact@clickwise.us',
-            subject: 'Re: Your message to ClickWise',
-            text: replyText,
-            html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#1a1a1a;font-size:15px;line-height:1.6;">${replyText.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')}</div>`
-        });
-        res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
