@@ -14,16 +14,16 @@
         }
         html { scroll-behavior: smooth; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--dark-gray); background: white; }
-        header { background: white; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        nav { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; gap: 2rem; }
-        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; }
+        header { background: white; position: sticky; top: 0; z-index: 1000; }
+        nav { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 1rem 2rem; }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; justify-self: start; }
         .logo-icon {
             width: 44px; height: 44px;
             background-image: url('assets/logo.png');
             background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center;
         }
         .logo-text { font-size: 1.4rem; font-weight: 700; color: var(--dark); }
-        nav ul { display: flex; list-style: none; gap: 0.5rem; }
+        nav ul { display: flex; list-style: none; gap: 0.5rem; justify-self: center; }
         nav button { background: none; border: none; color: var(--text-gray); font-weight: 500; font-size: 0.95rem; padding: 0.6rem 1.2rem; cursor: pointer; transition: all 0.2s ease; position: relative; }
         nav button:hover { color: var(--primary); }
         nav button.active { color: var(--primary); background: #fff5f7; }
@@ -33,7 +33,7 @@
         .section { display: none; }
         .section.active { display: block; }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        .hero { background: linear-gradient(135deg, #fff5f7 0%, var(--cream) 100%); padding: 3rem 2rem; text-align: center; }
+        .hero { background: #FFFAF8; padding: 3rem 2rem; text-align: center; }
         .hero h1 { font-size: 3rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem; line-height: 1.2; }
         .hero h1 span { color: var(--primary); }
         .hero p { font-size: 1.1rem; color: var(--text-gray); max-width: 700px; margin: 1rem auto 2rem; line-height: 1.7; }
@@ -88,12 +88,8 @@
         .filter-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0; }
         .filter-btn { background: white; color: var(--text-gray); padding: 0.7rem 1.4rem; border: 2px solid var(--border); cursor: pointer; font-weight: 600; transition: all 0.3s ease; }
         .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        footer { background: var(--dark); color: white; padding: 3rem 2rem; }
-        .footer-content { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
-        .footer-section h4 { margin-bottom: 1rem; font-weight: 600; }
-        .footer-section a { display: block; color: #d1d5db; text-decoration: none; margin-bottom: 0.5rem; transition: color 0.3s ease; }
-        .footer-section a:hover { color: white; }
-        .footer-bottom { border-top: 1px solid #374151; padding-top: 2rem; text-align: center; color: #d1d5db; font-size: 0.9rem; max-width: 1400px; margin: 0 auto; }
+        footer { background: white; color: var(--text-gray); padding: 2rem; text-align: center; }
+        footer p { font-size: 0.9rem; }
         .framework-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2rem; }
         .framework-item { background: white; border: 2px solid var(--border); padding: 2rem; }
         .framework-item h3 { font-size: 1.3rem; color: var(--primary); margin-bottom: 1rem; }
@@ -138,13 +134,12 @@
             </a>
             <ul>
                 <li><button class="nav-btn active" onclick="showSection('home', event)">Home</button></li>
-                <li><button class="nav-btn" onclick="showSection('framework', event)">Framework</button></li>
-                <li><button class="nav-btn" onclick="showSection('tools', event)">Tools</button></li>
+                <li><button class="nav-btn" onclick="showSection('framework', event)">Evaluation Framework</button></li>
+                <li><button class="nav-btn" onclick="showSection('tools', event)">Digital Tools</button></li>
                 <li><button class="nav-btn" onclick="showSection('guides', event)">Guides</button></li>
                 <li><button class="nav-btn" onclick="showSection('about', event)">About</button></li>
                 <li><button class="nav-btn" onclick="showSection('contact', event)">Contact</button></li>
             </ul>
-            <button class="cta-button" onclick="showSection('tools', event)">Explore</button>
         </nav>
     </header>
 
@@ -154,52 +149,73 @@
             <h1>Make <span>Informed Decisions</span> About Your Digital Tools</h1>
             <p>ClickWise provides transparent, evidence-based evaluations of AI tools, homework platforms, and online resources students use every day.</p>
             <div class="hero-buttons">
-                <button class="cta-button" onclick="showSection('tools', event)">Explore Database</button>
-                <button class="secondary-button" onclick="showSection('framework', event)">See Framework</button>
+                <button class="secondary-button" onclick="showSection('tools', event)">Explore Digital Tools</button>
+                <button class="secondary-button" onclick="showSection('framework', event)">See Evaluation Framework</button>
             </div>
         </section>
-        <section style="background: white; padding: 2rem;">
+        <section style="background: #FFF5F0; padding: 2rem;">
             <div class="container">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin: 2rem 0;">
-                    <div>
-                        <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Why ClickWise?</h3>
-                        <p style="color: var(--text-gray); margin-bottom: 1rem;">Students use digital tools daily without understanding privacy, security, and academic integrity implications.</p>
-                        <ul style="list-style: none;">
-                            <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">Transparent framework</span></li>
-                            <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">40+ tools evaluated</span></li>
-                            <li style="display: flex; gap: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray);">Evidence-based ratings</span></li>
-                        </ul>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 3rem; margin: 0 0 2rem 0;">
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="background: white; border: 3px solid var(--primary); padding: 2rem; box-shadow: 0 4px 12px rgba(251,99,118,0.2); max-width: 600px;">
+                            <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700; text-align: center;">Bring ClickWise to Your School</h3>
+                            <p style="color: var(--text-gray); margin-bottom: 1.25rem; text-align: center;">Students use digital tools daily without understanding privacy, security, and academic integrity implications. We help with:</p>
+                            <ul style="list-style: none;">
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Student awareness</span></li>
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">AI literacy</span></li>
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Ethical use guidelines</span></li>
+                                <li style="display: flex; gap: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Free presentation/workshop for schools</span></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div style="background: var(--cream); padding: 2rem; border: 2px solid var(--primary);">
-                        <h3 style="font-size: 1.2rem; color: var(--dark); margin-bottom: 1.5rem; font-weight: 700;">5 Evaluation Criteria</h3>
-                        <div style="display: grid; gap: 0.75rem;">
-                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Data Collection</div>
-                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Data Protection</div>
-                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">3rd-Party Sharing</div>
-                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Legal Compliance</div>
-                            <div style="padding: 0.75rem; background: white; border-left: 4px solid var(--primary); font-size: 0.9rem; font-weight: 600; color: var(--primary);">Academic Integrity</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; width: 100%;">
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="text-align: left;">
+                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">How We Evaluate Tools</h3>
+                                <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Data Collection</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Data Protection & Encryption</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Third-Party Data Sharing</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Legal Compliance (COPPA, FERPA, etc.)</span></li>
+                                <li><span style="color: var(--text-gray);">Academic Integrity Design</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="text-align: left;">
+                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Students Are Lost With</h3>
+                                <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Can I use ChatGPT for homework?</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Best AI tools that won't get me in trouble at School</span></li>
+                                <li><span style="color: var(--text-gray);">This is overwhelming, I need AI safety tips</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <div style="text-align: left;">
+                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Expert Validation</h3>
+                                <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Cybersecurity professionals</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Educators</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Advisory partners</span></li>
+                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Privacy experts</span></li>
+                                <li><span style="color: var(--text-gray);">Academic integrity specialists</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section style="background: var(--light-peach); padding: 2rem;">
+        <section style="background: #FFE8DD; padding: 2rem;">
             <div class="container">
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
-                    <div><div id="toolCount" style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">—</div><div style="color: var(--text-gray); font-size: 0.95rem;">Tools</div></div>
-                    <div><div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">5</div><div style="color: var(--text-gray); font-size: 0.95rem;">Criteria</div></div>
-                    <div><div style="font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">100%</div><div style="color: var(--text-gray); font-size: 0.95rem;">Transparent</div></div>
+                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);"><span id="toolCount">—</span> Tools Evaluated</div></div>
+                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">5 Evaluation Criteria</div></div>
+                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">100% Transparent</div></div>
                 </div>
             </div>
         </section>
-        <div class="container">
-            <div class="cta-section">
-                <h2>Start Making Smarter Choices</h2>
-                <p>Explore our framework and tool database to protect your privacy and academic integrity.</p>
-                <button class="cta-button-white" onclick="showSection('tools', event)">Explore Tools</button>
-                <button class="cta-button-white" onclick="showSection('framework', event)">View Framework</button>
-            </div>
-        </div>
     </div>
 
     <!-- FRAMEWORK -->
@@ -413,23 +429,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>ClickWise</h4>
-                <a href="#" onclick="showSection('home', event)">Home</a>
-                <a href="#" onclick="showSection('about', event)">About</a>
-                <a href="#" onclick="showSection('contact', event)">Contact</a>
-            </div>
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <a href="#" onclick="showSection('tools', event)">Tool Database</a>
-                <a href="#" onclick="showSection('guides', event)">Guides</a>
-                <a href="#" onclick="showSection('framework', event)">Framework</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 ClickWise. A student-led nonprofit for digital literacy and safety.</p>
-        </div>
+        <p>&copy; 2026 ClickWise. A student-led nonprofit for digital literacy and safety.</p>
     </footer>
 
     <script>
