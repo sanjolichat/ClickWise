@@ -36,7 +36,7 @@
         .hero { background: #FFFAF8; padding: 3rem 2rem; text-align: center; }
         .hero h1 { font-size: 3rem; font-weight: 700; color: var(--dark); margin-bottom: 0.75rem; line-height: 1.2; }
         .hero h1 span { color: var(--primary); }
-        .hero p { font-size: 1.1rem; color: var(--text-gray); max-width: 700px; margin: 1rem auto 2rem; line-height: 1.7; }
+        .hero p { font-size: 1.1rem; color: var(--text-gray); max-width: 100%; margin: 1rem auto 2rem; line-height: 1.7; padding: 0 2rem; }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .secondary-button { border: 2px solid var(--primary); color: var(--primary); padding: 0.7rem 1.6rem; font-weight: 600; background: white; cursor: pointer; transition: all 0.3s ease; }
         .secondary-button:hover { background: var(--primary); color: white; transform: translateY(-2px); }
@@ -147,7 +147,7 @@
     <div id="home" class="section active">
         <section class="hero">
             <h1>Make <span>Informed Decisions</span> About Your Digital Tools</h1>
-            <p>ClickWise provides transparent, evidence-based evaluations of AI tools, homework platforms, and online resources students use every day.</p>
+            <p>In a world where students use countless digital tools without understanding the privacy and security implications, ClickWise provides clarity. Our transparent, evidence-based evaluations examine AI assistants, educational platforms, and online resources across five critical dimensions, helping you understand what data you're sharing, how it's protected, and whether these tools truly support your learning.</p>
             <div class="hero-buttons">
                 <button class="secondary-button" onclick="showSection('tools', event)">Explore Digital Tools</button>
                 <button class="secondary-button" onclick="showSection('framework', event)">See Evaluation Framework</button>
@@ -157,62 +157,90 @@
             <div class="container">
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 3rem; margin: 0 0 2rem 0;">
                     <div style="display: flex; flex-direction: column; align-items: center;">
-                        <div style="background: white; border: 3px solid var(--primary); padding: 2rem; box-shadow: 0 4px 12px rgba(251,99,118,0.2); max-width: 600px;">
+                        <div style="background: white; border: 3px solid var(--primary); padding: 2.5rem; box-shadow: 0 4px 12px rgba(251,99,118,0.2); max-width: 800px;">
                             <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700; text-align: center;">Bring ClickWise to Your School</h3>
-                            <p style="color: var(--text-gray); margin-bottom: 1.25rem; text-align: center;">Students use digital tools daily without understanding privacy, security, and academic integrity implications. We help with:</p>
-                            <ul style="list-style: none;">
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Student awareness</span></li>
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">AI literacy</span></li>
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Ethical use guidelines</span></li>
-                                <li style="display: flex; gap: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Free presentation/workshop for schools</span></li>
+                            <p style="color: var(--text-gray); margin-bottom: 1.5rem; text-align: left; line-height: 1.8;">Every day, students across the country use AI chatbots for homework help, educational apps to study for tests, and online platforms to collaborate with classmates. But here's the problem: they're doing all of this without any real understanding of the risks involved. What data are these tools collecting? Is it being sold to advertisers? Could it be used against them? Will using this AI tool get them flagged for cheating?</p>
+                            <p style="color: var(--text-gray); margin-bottom: 1.5rem; text-align: left; line-height: 1.8;">ClickWise provides the answers students desperately need—and we bring that knowledge directly to your school through free, engaging presentations and workshops.</p>
+                            <h4 style="font-size: 1.3rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">What We Offer Schools:</h4>
+                            <ul style="list-style: none; margin-bottom: 1.5rem;">
+                                <li style="margin-bottom: 1rem;"><span style="color: var(--primary); font-size: 1rem; font-weight: 700;">★ Comprehensive Digital Literacy Education</span><br><span style="color: var(--text-gray); font-size: 0.95rem; line-height: 1.7;">We don't just tell students 'be careful online.' We teach them how to critically evaluate the tools they use, understand privacy policies, recognize security red flags, and make informed decisions about their digital footprint</span></li>
+                                <li style="margin-bottom: 1rem;"><span style="color: var(--primary); font-size: 1rem; font-weight: 700;">★ AI Literacy & Responsible Use</span><br><span style="color: var(--text-gray); font-size: 0.95rem; line-height: 1.7;">As AI becomes ubiquitous in education, students need to understand how to use these powerful tools ethically and effectively, without crossing the line into academic dishonesty</span></li>
+                                <li style="margin-bottom: 1rem;"><span style="color: var(--primary); font-size: 1rem; font-weight: 700;">★ Practical Privacy Strategies</span><br><span style="color: var(--text-gray); font-size: 0.95rem; line-height: 1.7;">Students learn actionable steps to protect their personal information, from understanding permissions to recognizing data harvesting practices</span></li>
+                                <li style="margin-bottom: 1rem;"><span style="color: var(--primary); font-size: 1rem; font-weight: 700;">★ Academic Integrity in the Digital Age</span><br><span style="color: var(--text-gray); font-size: 0.95rem; line-height: 1.7;">We help students navigate the complex ethical questions surrounding AI-assisted work, plagiarism detection, and what constitutes 'doing your own work' in 2026</span></li>
                             </ul>
+                            <p style="color: var(--primary); margin-bottom: 0.5rem; text-align: center; font-weight: 700; font-size: 1.1rem;">Completely Free for Schools</p>
+                            <p style="color: var(--text-gray); margin-bottom: 1rem; text-align: center; line-height: 1.7;">We believe every student deserves access to this critical information, regardless of their school's budget. Our presentations can be customized for different grade levels, class periods, assemblies, or parent nights.</p>
+                            <p style="color: var(--text-gray); text-align: center; font-style: italic;">Ready to bring digital literacy to your school? Contact us to schedule a workshop.</p>
                         </div>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; width: 100%;">
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <div style="text-align: left;">
-                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">How We Evaluate Tools</h3>
-                                <ul style="list-style: none;">
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Data Collection</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Data Protection & Encryption</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Third-Party Data Sharing</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Legal Compliance (COPPA, FERPA, etc.)</span></li>
-                                <li><span style="color: var(--text-gray);">Academic Integrity Design</span></li>
-                                </ul>
+                        <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 8px 24px rgba(251,99,118,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <div style="display: inline-block; background: linear-gradient(135deg, #FB6376 0%, #ff8a9a 100%); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1rem;">✓</div>
+                                <h3 style="font-size: 1.4rem; color: var(--primary); font-weight: 700;">How We Evaluate Tools</h3>
                             </div>
+                            <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Data Collection</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Data Protection & Encryption</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Third-Party Data Sharing</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Legal Compliance (COPPA, FERPA, etc.)</span></li>
+                                <li style="padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Academic Integrity Design</span></li>
+                            </ul>
                         </div>
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <div style="text-align: left;">
-                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Students Are Lost With</h3>
-                                <ul style="list-style: none;">
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Can I use ChatGPT for homework?</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Best AI tools that won't get me in trouble at School</span></li>
-                                <li><span style="color: var(--text-gray);">This is overwhelming, I need AI safety tips</span></li>
-                                </ul>
+                        <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 8px 24px rgba(251,99,118,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <div style="display: inline-block; background: linear-gradient(135deg, #FB6376 0%, #ff8a9a 100%); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1rem;">?</div>
+                                <h3 style="font-size: 1.4rem; color: var(--primary); font-weight: 700;">Do you know the answers?</h3>
                             </div>
+                            <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">What are the rules for using AI tools in school assignments?</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">When does using AI cross the line into cheating?</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">How can I tell if my AI use violates academic integrity?</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">What are safe AI tools students can use without academic penalties?</span></li>
+                                <li style="padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">How can I use AI ethically for research projects?</span></li>
+                            </ul>
                         </div>
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <div style="text-align: left;">
-                                <h3 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Expert Validation</h3>
-                                <ul style="list-style: none;">
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Cybersecurity professionals</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Educators</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Advisory partners</span></li>
-                                <li style="margin-bottom: 0.75rem;"><span style="color: var(--text-gray);">Privacy experts</span></li>
-                                <li><span style="color: var(--text-gray);">Academic integrity specialists</span></li>
-                                </ul>
+                        <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 8px 24px rgba(251,99,118,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <div style="display: inline-block; background: linear-gradient(135deg, #FB6376 0%, #ff8a9a 100%); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 1rem;">★</div>
+                                <h3 style="font-size: 1.4rem; color: var(--primary); font-weight: 700;">Expert Validation</h3>
                             </div>
+                            <ul style="list-style: none;">
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Cybersecurity professionals</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Educators</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Advisory partners</span></li>
+                                <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Privacy experts</span></li>
+                                <li style="padding-left: 1.5rem; position: relative;"><span style="position: absolute; left: 0; color: var(--primary);">★</span><span style="color: var(--text-gray); font-size: 0.95rem;">Academic integrity specialists</span></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section style="background: #FFE8DD; padding: 2rem;">
+        <section style="background: #FFE8DD; padding: 3rem 2rem;">
             <div class="container">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
-                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);"><span id="toolCount">—</span> Tools Evaluated</div></div>
-                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">5 Evaluation Criteria</div></div>
-                    <div><div style="font-size: 1.3rem; font-weight: 700; color: var(--primary);">100% Transparent</div></div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;"><span id="toolCount">—</span></div>
+                        <div style="font-size: 1.1rem; color: var(--text-gray); font-weight: 600;">Tools Evaluated</div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #FFE8DD;">
+                            <span style="color: var(--primary); font-size: 0.9rem;">★★★★★</span>
+                        </div>
+                    </div>
+                    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">5</div>
+                        <div style="font-size: 1.1rem; color: var(--text-gray); font-weight: 600;">Evaluation Criteria</div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #FFE8DD;">
+                            <span style="color: var(--primary); font-size: 0.9rem;">★★★★★</span>
+                        </div>
+                    </div>
+                    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.08); text-align: center; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-8px)'" onmouseout="this.style.transform='translateY(0)'">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem;">100%</div>
+                        <div style="font-size: 1.1rem; color: var(--text-gray); font-weight: 600;">Transparent</div>
+                        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #FFE8DD;">
+                            <span style="color: var(--primary); font-size: 0.9rem;">★★★★★</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -222,7 +250,7 @@
     <div id="framework" class="section">
         <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Our Evaluation <span>Framework</span></h1>
-            <p>Every tool assessed using five concrete criteria. Transparent. Reproducible. Evidence-based. Our framework directly impacts student privacy, security, and academic success.</p>
+            <p>Our evaluation framework provides a systematic approach to assessing digital tools used by students. Every tool is rigorously analyzed across five concrete criteria—data collection, data protection, third-party sharing, legal compliance, and academic integrity. Our transparent, reproducible, and evidence-based methodology ensures students, parents, and educators have the information they need to make safe, informed decisions about educational technology.</p>
         </section>
         <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
@@ -298,7 +326,7 @@
     <div id="tools" class="section">
         <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Tool <span>Database</span></h1>
-            <p>Evaluated tools with verified privacy policies and specific website names.</p>
+            <p>Browse our comprehensive database of digital tools commonly used by students. Each tool has been rigorously evaluated across five key criteria—data collection, data protection, third-party sharing, legal compliance, and academic integrity—to help you make informed decisions about the technology you use for learning.</p>
         </section>
         <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
@@ -332,7 +360,7 @@
     <div id="about" class="section">
         <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>About <span>ClickWise</span></h1>
-            <p>A student-led project dedicated to digital literacy and transparent tool evaluation.</p>
+            <p>ClickWise began as one student's mission to answer a simple question: which digital tools are actually safe for students to use? Today, we're a student-led nonprofit organization committed to digital literacy education and transparent technology evaluation. We bridge the gap between complex privacy policies and student understanding, providing clear, actionable information about the AI assistants, homework platforms, and online resources that millions of students use every day.</p>
         </section>
         <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
