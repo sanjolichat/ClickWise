@@ -13,7 +13,7 @@
             --dark-gray: #111827; --border: #e5e7eb;
         }
         html { scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--dark-gray); background: white; }
+        body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; color: var(--dark-gray); background: white; }
         header { background: white; position: sticky; top: 0; z-index: 1000; }
         nav { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 1rem 2rem; }
         .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; justify-self: start; }
@@ -52,7 +52,7 @@
         .card p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.6; }
         .tool-card { background: white; border: 2px solid var(--border); overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
         .tool-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-color: var(--primary); }
-        .tool-header { padding: 1.5rem; background: #f9f9f9; border-bottom: 2px solid var(--border); }
+        .tool-header { padding: 1.5rem; background: #FFE8DD; border-bottom: 2px solid var(--border); }
         .tool-header h3 { color: var(--dark); margin-bottom: 0.25rem; font-size: 1.1rem; font-weight: 600; }
         .tool-header p { font-size: 0.85rem; color: var(--text-gray); margin-bottom: 1rem; }
         .risk-badge { display: inline-block; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
@@ -74,9 +74,9 @@
         .modal-header { margin-bottom: 1.5rem; padding-right: 2rem; }
         .modal-header h2 { font-size: 1.8rem; color: var(--dark); margin-bottom: 0.5rem; }
         .modal-header p { color: var(--text-gray); font-size: 0.95rem; }
-        .modal-body { color: var(--text-gray); line-height: 1.8; }
-        .modal-body h3 { color: var(--primary); font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
-        .modal-body p { margin-bottom: 1rem; }
+        .modal-body { color: var(--text-gray); line-height: 1.6; display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1rem; align-items: baseline; }
+        .modal-body h3 { color: var(--dark-gray); font-size: 0.95rem; margin: 0; font-weight: 700; letter-spacing: 0.3px; text-align: right; }
+        .modal-body p { margin: 0; font-size: 0.9rem; }
         .article-content { max-width: 800px; margin: 0 auto; color: var(--text-gray); line-height: 1.9; }
         .article-content h1 { font-size: 2.2rem; color: var(--dark); margin-bottom: 1rem; }
         .article-content h2 { font-size: 1.4rem; color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -161,10 +161,10 @@
                             <h3 style="font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700; text-align: center;">Bring ClickWise to Your School</h3>
                             <p style="color: var(--text-gray); margin-bottom: 1.25rem; text-align: center;">Students use digital tools daily without understanding privacy, security, and academic integrity implications. We help with:</p>
                             <ul style="list-style: none;">
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Student awareness</span></li>
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">AI literacy</span></li>
-                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Ethical use guidelines</span></li>
-                                <li style="display: flex; gap: 0.75rem;"><span style="color: var(--accent); font-weight: bold; font-size: 1.2rem;">✓</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Free presentation/workshop for schools</span></li>
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Student awareness</span></li>
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">AI literacy</span></li>
+                                <li style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Ethical use guidelines</span></li>
+                                <li style="display: flex; gap: 0.75rem;"><span style="color: var(--primary); font-size: 1rem;">★</span> <span style="color: var(--text-gray); font-size: 1.05rem;">Free presentation/workshop for schools</span></li>
                             </ul>
                         </div>
                     </div>
@@ -220,11 +220,11 @@
 
     <!-- FRAMEWORK -->
     <div id="framework" class="section">
-        <section class="hero" style="padding: 2.5rem 2rem;">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Our Evaluation <span>Framework</span></h1>
             <p>Every tool assessed using five concrete criteria. Transparent. Reproducible. Evidence-based.</p>
         </section>
-        <section style="background: white;">
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
                 <div class="section-header">
                     <h2>How We Evaluate Tools</h2>
@@ -300,11 +300,11 @@
 
     <!-- TOOLS -->
     <div id="tools" class="section">
-        <section class="hero" style="padding: 2.5rem 2rem;">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Tool <span>Database</span></h1>
             <p>Evaluated tools with verified privacy policies and specific website names.</p>
         </section>
-        <section style="background: white;">
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
                 <div class="filter-buttons">
                     <button class="filter-btn active" onclick="filterTools('all', event)">All</button>
@@ -321,11 +321,11 @@
 
     <!-- GUIDES -->
     <div id="guides" class="section">
-        <section class="hero" style="padding: 2.5rem 2rem;">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Digital Literacy <span>Guides</span></h1>
             <p>Learn how to stay safe, protect your privacy, and make informed decisions about digital tools.</p>
         </section>
-        <section style="background: white; padding: 3rem 2rem;">
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container article-content" id="guide-content">
                 <p class="loading">Loading guides...</p>
             </div>
@@ -334,11 +334,11 @@
 
     <!-- ABOUT -->
     <div id="about" class="section">
-        <section class="hero" style="padding: 2.5rem 2rem;">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>About <span>ClickWise</span></h1>
             <p>A student-led project dedicated to digital literacy and transparent tool evaluation.</p>
         </section>
-        <section style="background: white; padding: 3rem 2rem;">
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
                 <div style="max-width: 800px; margin: 0 auto;">
 
@@ -365,7 +365,7 @@
 
                     <!-- CTA -->
                     <div style="text-align: center; padding: 1rem 0;">
-                        <button class="cta-button" onclick="showSection('contact', event)" style="margin-right: 1rem;">Get in Touch</button>
+                        <button class="secondary-button" onclick="showSection('contact', event)" style="margin-right: 1rem;">Get in Touch</button>
                         <button class="secondary-button" onclick="showSection('tools', event)">Explore Tools</button>
                     </div>
 
@@ -376,11 +376,11 @@
 
     <!-- CONTACT -->
     <div id="contact" class="section">
-        <section class="hero" style="padding: 2.5rem 2rem;">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
             <h1>Get in <span>Touch</span></h1>
             <p>Questions, feedback, or want to get involved? We'd love to hear from you.</p>
         </section>
-        <section style="background: white;">
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
             <div class="container">
                 <div style="max-width: 700px; margin: 0 auto; text-align: center;">
                     <!-- Contact Form -->
@@ -507,13 +507,22 @@
                 const res = await fetch(`/api/tools/${toolId}`);
                 const tool = await res.json();
                 const riskLabel = tool.risk.charAt(0).toUpperCase() + tool.risk.slice(1);
+                const siteUrl = tool.site.startsWith('http') ? tool.site : `https://${tool.site}`;
                 document.getElementById('modalBody').innerHTML =
-                    `<div class="modal-header">
-                        <h2>${tool.name}</h2>
-                        <p>${tool.site}</p>
-                        <span class="risk-badge risk-${tool.risk}" style="margin-top:0.5rem;display:inline-block">${riskLabel} Risk</span>
+                    `<div class="modal-header" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;">
+                        <h2 style="margin: 0; justify-self: start;">${tool.name}</h2>
+                        <p style="margin: 0; justify-self: center;"><a href="${siteUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: none;">${tool.site}</a></p>
+                        <span class="risk-badge risk-${tool.risk}" style="margin: 0; justify-self: end;">${riskLabel} Risk</span>
                     </div>
                     <div class="modal-body">${tool.content}</div>`;
+                // Color code risk words only (matching badge colors)
+                document.querySelectorAll('.modal-body h3').forEach(h3 => {
+                    let html = h3.innerHTML;
+                    html = html.replace(/\bLow\b/g, '<span style="color: #166534; background: #dcfce7; padding: 2px 6px;">Low</span>');
+                    html = html.replace(/\bMedium\b/g, '<span style="color: #92400e; background: #fef3c7; padding: 2px 6px;">Medium</span>');
+                    html = html.replace(/\bHigh\b/g, '<span style="color: #991b1b; background: #fee2e2; padding: 2px 6px;">High</span>');
+                    h3.innerHTML = html;
+                });
             } catch (err) {
                 document.getElementById('modalBody').innerHTML =
                     '<p style="color:var(--warning);">Failed to load tool details.</p>';
