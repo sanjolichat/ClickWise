@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickWise - Test Changes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #FB6376;
+            --dark: #5D2A42;
+            --text-gray: #6b7280;
+            --border: #e5e7eb;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 2rem;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border: 2px solid var(--border);
+        }
+        h1 {
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        h2 {
+            color: var(--primary);
+            margin: 2rem 0 1rem;
+            font-size: 1.5rem;
+        }
+        .secondary-button {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.7rem 1.6rem;
+            font-weight: 600;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+        .secondary-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .button-demo {
+            text-align: center;
+            padding: 2rem;
+            background: #f9f9f9;
+            border: 2px solid var(--border);
+            margin: 1rem 0;
+        }
+
+        /* Modal styles */
+        .modal-content {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        .modal-header p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+        .risk-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* NEW COMPACT SPACING */
+        .modal-body {
+            color: var(--text-gray);
+            line-height: 1.3;
+        }
+        .modal-body h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.3rem;
+        }
+        .modal-body p {
+            margin-bottom: 0.3rem;
+        }
+
+        .label {
+            background: #FFF9EC;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid var(--primary);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ClickWise Changes Preview</h1>
+
+        <h2>1. Button Hover Behavior (About Page)</h2>
+        <p style="color: var(--text-gray); margin-bottom: 1rem;">Both buttons now have the same hover effect - pink outline that fills with color:</p>
+        <div class="button-demo">
+            <button class="secondary-button">Get in Touch</button>
+            <button class="secondary-button">Explore Tools</button>
+        </div>
+        <div class="label">✓ Hover over the buttons to see the effect</div>
+
+        <h2>2. Compact Modal Spacing (Tool Details Popup)</h2>
+        <p style="color: var(--text-gray); margin-bottom: 1rem;">Tool detail popups now have much tighter spacing:</p>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ChatGPT</h3>
+                <p>chatgpt.com</p>
+                <span class="risk-badge">Low Risk</span>
+            </div>
+            <div class="modal-body">
+                <h3>Data Collection</h3>
+                <p>ChatGPT collects minimal personal information. You can use it without creating an account in some cases.</p>
+                <p>Account creation requires email address only.</p>
+
+                <h3>Data Protection & Encryption</h3>
+                <p>Uses HTTPS encryption for all data transmission.</p>
+                <p>Has a clear, transparent privacy policy.</p>
+                <p>Third-party security audits available.</p>
+
+                <h3>Third-Party Data Sharing</h3>
+                <p>Does not sell user data to third parties.</p>
+                <p>May use data for model training unless opted out.</p>
+
+                <h3>Legal Compliance</h3>
+                <p>COPPA compliant for users under 13 with parental consent.</p>
+                <p>FERPA compliant for educational use.</p>
+
+                <h3>Academic Integrity Design</h3>
+                <p>Designed as a learning assistant tool.</p>
+                <p>Encourages understanding over direct answers.</p>
+                <p>Can be configured to guide rather than solve.</p>
+            </div>
+        </div>
+
+        <div class="label">✓ Notice the tight spacing between headings and paragraphs</div>
+
+        <h2>Summary of Changes</h2>
+        <ul style="color: var(--text-gray); margin-left: 2rem; line-height: 2;">
+            <li><strong>Modal line-height:</strong> 1.8 → 1.3</li>
+            <li><strong>Modal heading size:</strong> 1.2rem → 1rem</li>
+            <li><strong>Modal heading margins:</strong> 1.5rem/0.75rem → 0.5rem/0.3rem</li>
+            <li><strong>Modal paragraph margin:</strong> 1rem → 0.3rem</li>
+            <li><strong>About page "Get in Touch" button:</strong> Changed to secondary-button style</li>
+        </ul>
+    </div>
+</body>
+</html>
