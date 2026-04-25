@@ -137,6 +137,7 @@
                 <li><button class="nav-btn" onclick="showSection('framework', event)">Evaluation Framework</button></li>
                 <li><button class="nav-btn" onclick="showSection('tools', event)">Digital Tools</button></li>
                 <li><button class="nav-btn" onclick="showSection('guides', event)">Guides</button></li>
+                <li><button class="nav-btn" onclick="showSection('submit-tool', event)">Submit Tool</button></li>
                 <li><button class="nav-btn" onclick="showSection('about', event)">About</button></li>
                 <li><button class="nav-btn" onclick="showSection('contact', event)">Contact</button></li>
             </ul>
@@ -356,6 +357,76 @@
         </section>
     </div>
 
+    <!-- SUBMIT TOOL -->
+    <div id="submit-tool" class="section">
+        <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
+            <h1>Submit a <span>Tool</span></h1>
+            <p>Know of a digital tool that students use but isn't in our database? Help us expand our evaluations by suggesting it here. We review all submissions and prioritize tools based on popularity and student need.</p>
+        </section>
+        <section style="background: #FFF5F0; padding: 1.5rem 2rem 3rem;">
+            <div class="container">
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <form class="contact-form" id="submitToolForm" name="submit-tool" method="POST" data-netlify="true" netlify-honeypot="bot-field-tool" onsubmit="submitToolForm(event)">
+                        <input type="hidden" name="form-name" value="submit-tool">
+                        <p style="display: none;">
+                            <label>Don't fill this out if you're human: <input name="bot-field-tool" /></label>
+                        </p>
+                        <h3>Suggest a Tool for Evaluation</h3>
+                        <div class="form-group">
+                            <label for="toolName">Tool Name *</label>
+                            <input type="text" id="toolName" name="tool-name" placeholder="e.g., ChatGPT, Quizlet, etc." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolWebsite">Website/URL *</label>
+                            <input type="url" id="toolWebsite" name="tool-website" placeholder="https://example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolCategory">Category</label>
+                            <select id="toolCategory" name="tool-category" style="width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border); font-family: inherit; font-size: 0.95rem; color: var(--dark-gray); background: white;">
+                                <option value="">Select a category (optional)</option>
+                                <option value="ai-assistant">AI Assistant</option>
+                                <option value="homework-help">Homework Help</option>
+                                <option value="study-tool">Study Tool</option>
+                                <option value="social-media">Social Media</option>
+                                <option value="messaging">Messaging/Chat</option>
+                                <option value="educational-platform">Educational Platform</option>
+                                <option value="math-science">Math/Science Tool</option>
+                                <option value="writing-tool">Writing Tool</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolDescription">What does this tool do? *</label>
+                            <textarea id="toolDescription" name="tool-description" placeholder="Brief description of the tool's purpose and how students use it..." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="toolPopularity">Why should we evaluate this tool? *</label>
+                            <textarea id="toolPopularity" name="tool-reason" placeholder="Is it widely used at your school? Does it have privacy concerns? Potential for misuse?" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="submitterEmail">Your Email (optional)</label>
+                            <input type="email" id="submitterEmail" name="submitter-email" placeholder="your@email.com (we'll notify you when we evaluate this tool)">
+                        </div>
+                        <button type="submit" class="cta-button" style="width: 100%;">Submit Tool Suggestion</button>
+                        <div class="form-success" id="toolFormSuccess">Thank you! We'll review this tool and add it to our evaluation queue.</div>
+                        <div class="form-error" id="toolFormError">Something went wrong. Please try again.</div>
+                        <p class="form-notice">We prioritize tools based on student usage and potential impact. Popular submissions are evaluated first.</p>
+                    </form>
+
+                    <div style="background: var(--cream); border: 2px solid var(--primary); padding: 2rem; margin-top: 2rem;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem;">What happens next?</h3>
+                        <ul style="color: var(--text-gray); line-height: 1.8; margin-left: 1.5rem;">
+                            <li style="margin-bottom: 0.75rem;">We review your submission within 5 business days</li>
+                            <li style="margin-bottom: 0.75rem;">Our team evaluates the tool across all 5 criteria</li>
+                            <li style="margin-bottom: 0.75rem;">The evaluation is added to our public database</li>
+                            <li>If you provided an email, we'll notify you when it's live</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <!-- ABOUT -->
     <div id="about" class="section">
         <section class="hero" style="padding: 2rem 2rem 1rem; background: #FFFAF8;">
@@ -467,7 +538,7 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-            const btnIndex = ['home', 'framework', 'tools', 'guides', 'about', 'contact'].indexOf(sectionId);
+            const btnIndex = ['home', 'framework', 'tools', 'guides', 'submit-tool', 'about', 'contact'].indexOf(sectionId);
             const navBtns = document.querySelectorAll('.nav-btn');
             if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
             window.scrollTo(0, 0);
@@ -644,11 +715,38 @@
             }
         }
 
+        // ── Submit Tool Form ────────────────────────────────────────────────────
+        async function submitToolForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const successEl = document.getElementById('toolFormSuccess');
+            const errorEl = document.getElementById('toolFormError');
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(new FormData(form)).toString()
+                });
+
+                if (response.ok) {
+                    form.reset();
+                    successEl.style.display = 'block';
+                } else {
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                errorEl.style.display = 'block';
+            }
+        }
+
         // ── Init ────────────────────────────────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {
             loadTools();
             loadGuideList();
-            const valid = ['framework', 'tools', 'guides', 'about', 'contact'];
+            const valid = ['framework', 'tools', 'guides', 'submit-tool', 'about', 'contact'];
             const pathSection = window.location.pathname.slice(1);
             if (pathSection && valid.includes(pathSection)) showSection(pathSection, null, true);
 
