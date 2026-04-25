@@ -1,0 +1,8 @@
+[build]
+  publish = "public"
+  command = "mkdir -p public && cp standalone.html public/index.html && cp -r frontend/assets public/assets"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
