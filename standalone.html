@@ -714,8 +714,10 @@
             const guide = allGuides.find(g => g.id === guideId);
             if (guide) {
                 container.innerHTML =
-                    `<button class="back-button" onclick="loadGuideList()">← Back to Guides</button>
-                    ${guide.content}`;
+                    `<div class="article-content">
+                        <button class="back-button" onclick="loadGuideList()">← Back to Guides</button>
+                        ${guide.content}
+                    </div>`;
             } else {
                 container.innerHTML = '<p style="color:var(--warning);">Guide not found.</p>';
             }
