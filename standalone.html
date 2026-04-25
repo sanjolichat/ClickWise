@@ -717,6 +717,7 @@
                     `<div class="article-content">
                         <button class="back-button" onclick="loadGuideList()">← Back to Guides</button>
                         ${guide.content}
+                        <button class="back-button" onclick="loadGuideList()" style="margin-top: 2rem;">← Back to Guides</button>
                     </div>`;
             } else {
                 container.innerHTML = '<p style="color:var(--warning);">Guide not found.</p>';
