@@ -136,10 +136,10 @@
                 <li><button class="nav-btn active" onclick="showSection('home', event)">Home</button></li>
                 <li><button class="nav-btn" onclick="showSection('framework', event)">Evaluation Framework</button></li>
                 <li><button class="nav-btn" onclick="showSection('tools', event)">Digital Tools</button></li>
-                <li><button class="nav-btn" onclick="showSection('guides', event)">Guides</button></li>
                 <li><button class="nav-btn" onclick="showSection('submit-tool', event)">Submit Tool for Evaluation</button></li>
-                <li><button class="nav-btn" onclick="showSection('about', event)">About</button></li>
+                <li><button class="nav-btn" onclick="showSection('guides', event)">Guides</button></li>
                 <li><button class="nav-btn" onclick="showSection('contact', event)">Contact</button></li>
+                <li><button class="nav-btn" onclick="showSection('about', event)">About</button></li>
             </ul>
         </nav>
     </header>
@@ -538,7 +538,7 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-            const btnIndex = ['home', 'framework', 'tools', 'guides', 'submit-tool', 'about', 'contact'].indexOf(sectionId);
+            const btnIndex = ['home', 'framework', 'tools', 'submit-tool', 'guides', 'contact', 'about'].indexOf(sectionId);
             const navBtns = document.querySelectorAll('.nav-btn');
             if (btnIndex >= 0 && navBtns[btnIndex]) navBtns[btnIndex].classList.add('active');
             window.scrollTo(0, 0);
